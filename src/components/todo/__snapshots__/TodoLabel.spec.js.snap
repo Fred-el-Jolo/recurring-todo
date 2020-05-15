@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`TodoLabel renders the correct markup 1`] = `"<p data-done=\\"true\\"><span>x</span> <span class=\\"priority\\">(A)</span> <span class=\\"completion-date\\">2020-05-12</span> <span class=\\"creation-date\\">2020-05-11</span> <span class=\\"title\\">Launch a unit test on a TodoLabel</span> <span class=\\"projects\\">+dev +vuejs +recurring-todo</span> <span class=\\"contexts\\">@jest @unit-test</span> <span class=\\"extra\\">due:2020-05-13</span> <span class=\\"extra\\">auto:false</span> <span class=\\"extra\\">recurrent:false</span></p>"`;

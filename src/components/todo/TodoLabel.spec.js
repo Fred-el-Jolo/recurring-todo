@@ -1,37 +1,36 @@
-import regeneratorRuntime from "regenerator-runtime";
-import { mount } from "@vue/test-utils";
-import TodoLabel from "./TodoLabel.vue";
+// import regeneratorRuntime from 'regenerator-runtime';
+import { mount } from '@vue/test-utils';
+import TodoLabel from './TodoLabel.vue';
+import '../../utils/filters';
 
-describe("TodoLabel", () => {
-  const initWrapper = propsData => {
+describe('TodoLabel', () => {
+  const initWrapper = (propsData) => {
     return mount(TodoLabel, {
-      propsData
+      propsData,
     });
   };
 
-  const destroyWrapper = wrapper => {
+  const destroyWrapper = (wrapper) => {
     wrapper.destroy();
   };
 
-  it("renders the correct markup", () => {
+  it('renders the correct markup', () => {
     const wrapper = initWrapper({
       todo: {
-        title: "Launch a unit test on a TodoLabel",
-        priority: "A",
-        creationDate: "2020-05-11",
-        completionDate: "2020-05-12",
+        title: 'Launch a unit test on a TodoLabel',
+        priority: 'A',
+        creationDate: '2020-05-11',
+        completionDate: '2020-05-12',
         isDone: true,
-        projects: ["dev", "vuejs", "recurring-todo"],
-        contexts: ["jest", "unit-test"],
-        dueDate: "2020-05-13",
+        projects: ['dev', 'vuejs', 'recurring-todo'],
+        contexts: ['jest', 'unit-test'],
+        dueDate: '2020-05-13',
         isAuto: false,
-        isRecurrent: false
-      }
+        isRecurrent: false,
+      },
     });
 
-    expect(wrapper.html()).toContain(
-      "<p>x (A) 2020-05-12 2020-05-11 Launch a unit test on a TodoLabel +dev +vuejs +recurring-todo @jest @unit-test due:2020-05-13 auto:false recurrent:false</p>"
-    );
+    expect(wrapper.html()).toMatchSnapshot();
 
     destroyWrapper(wrapper);
   });

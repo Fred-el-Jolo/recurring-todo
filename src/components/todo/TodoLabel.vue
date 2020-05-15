@@ -1,5 +1,33 @@
 <template>
-  <p>{{ formatTodoLabel }}</p>
+  <p :data-done="todo.isDone">
+    <span v-if="todo.isDone">{{ formatIsDone }}</span>
+    <span v-if="todo.priority"
+          class="priority"
+    >{{ formatPriority }}</span>
+    <span
+      v-if="todo.completionDate"
+      class="completion-date"
+    >{{ todo.completionDate }}</span>
+    <span
+      v-if="todo.creationDate"
+      class="creation-date"
+    >{{ todo.creationDate }}</span>
+    <span class="title">{{ todo.title }}</span>
+    <span
+      v-if="todo.projects.length"
+      class="projects"
+    >{{ todo.projects | prefixArrayValues('+') }}</span>
+    <span
+      v-if="todo.contexts.length"
+      class="contexts"
+    >{{ todo.contexts | prefixArrayValues('@') }}</span>
+    <span
+      v-if="todo.dueDate"
+      class="extra"
+    >{{ todo.dueDate | prefixString('due:') }}</span>
+    <span class="extra">{{ todo.isAuto | prefixString('auto:') }}</span>
+    <span class="extra">{{ todo.isRecurrent | prefixString('recurrent:') }}</span>
+  </p>
 </template>
 
 <script>
@@ -7,85 +35,64 @@ export default {
   props: {
     todo: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
-  /*
-	data: function() {
-    return {
-      todo: {
-			  title: "",
-        priority: "",
-        creationDate: "",
-        completionDate: "",
-        isDone: "",
-        projects: [],
-        contexts: [],
-        dueDate: "",
-        isAuto: "",
-        isRecurrent: ""
-      }
-    };
-  },
-	*/
   computed: {
     formatPriority () {
-      return `(${this.todo.priority})`
-    },
-    formatTitle () {
-      return this.todo.title
-    },
-    formatCreationDate () {
-      return this.todo.creationDate
-    },
-    formatCompletionDate () {
-      return this.todo.completionDate
+      return `(${this.todo.priority})`;
     },
     formatIsDone () {
-      return this.todo.isDone ? 'x' : ''
+      return this.todo.isDone ? 'x' : '';
     },
-    formatProjects () {
-      return this.todo.projects
-        .reduce((acc, cur) => {
-          return (acc += ` +${cur}`)
-        }, '')
-        .trim()
-    },
-    formatContexts () {
-      return this.todo.contexts
-        .reduce((acc, cur) => {
-          return (acc += ` @${cur}`)
-        }, '')
-        .trim()
-    },
-    formatDueDate () {
-      return `due:${this.todo.dueDate}`
-    },
-    formatIsAuto () {
-      return `auto:${this.todo.isAuto}`
-    },
-    formatIsRecurrent () {
-      return `recurrent:${this.todo.isRecurrent}`
-    },
-    formatTodoLabel () {
-      return `${this.formatIsDone} \
-${this.formatPriority} \
-${this.formatCompletionDate} \
-${this.formatCreationDate} \
-${this.formatTitle} \
-${this.formatProjects} \
-${this.formatContexts} \
-${this.formatDueDate} \
-${this.formatIsAuto} \
-${this.formatIsRecurrent}`
-    }
-  }
-}
+  },
+};
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+$color-grey: #74705d;
+$color-purple: #ac80ff;
+$color-dark: rgba(0, 0, 0, 1);
+$color-yellow: #e7db74;
+$color-red: #f92470;
+$color-blue: #67d8ef;
+
 p {
   font-size: 2em;
   text-align: center;
+
+  &[data-done] {
+    color: $color-grey;
+  }
+
+  &:not([data-done]) {
+    & span.priority {
+      color: $color-purple;
+    }
+
+    & span.completion-date {
+      color: $color-purple;
+    }
+
+    & span.creation-date {
+      color: $color-purple;
+    }
+
+    & span.title {
+      color: $color-dark;
+    }
+
+    & span.projects {
+      color: $color-yellow;
+    }
+
+    & span.contexts {
+      color: $color-red;
+    }
+
+    & span.extra {
+      color: $color-blue;
+    }
+  }
 }
 </style>

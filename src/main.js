@@ -1,11 +1,12 @@
-import Vue from "vue";
-import App from "./App";
+import Vue from 'vue';
+import App from './App';
+import './utils/filters';
 
 // Runtime + compiler;
 new Vue({
-  el: "#app",
-  template: "<App/>",
-  components: { App }
+  el: '#app',
+  components: { App },
+  template: '<App/>',
 });
 
 // Runtime only

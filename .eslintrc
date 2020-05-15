@@ -3,7 +3,7 @@
   "rules": {
     "import/no-unresolved": 0,
     "import/no-unassigned-import": 0,
-    "semi": ["error", "never"],
+    "semi": ["error", "always"],
     "no-console": "off",
     "space-before-function-paren": [
       "error",
@@ -13,6 +13,24 @@
         "asyncArrow": "always"
       }
     ],
-    "comma-dangle": ["error", "always-multiline"]
-  }
+    "comma-dangle": ["error", "always-multiline"],
+    "vue/max-attributes-per-line": [
+      "error",
+      {
+        "singleline": 1,
+        "multiline": {
+          "max": 2,
+          "allowFirstLine": true
+        }
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["*.spec.js"],
+      "env": {
+        "jest": true
+      }
+    }
+  ]
 }
