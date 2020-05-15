@@ -1,10 +1,12 @@
 import regeneratorRuntime from "regenerator-runtime";
 import { mount } from "@vue/test-utils";
-import Counter from "./counter";
+import TodoLabel from "./TodoLabel.vue";
 
-describe("Counter", () => {
-  const initWrapper = () => {
-    return mount(Counter);
+describe("TodoLabel", () => {
+  const initWrapper = propsData => {
+    return mount(TodoLabel, {
+      propsData
+    });
   };
 
   const destroyWrapper = wrapper => {
@@ -12,15 +14,31 @@ describe("Counter", () => {
   };
 
   it("renders the correct markup", () => {
-    const wrapper = initWrapper();
+    const wrapper = initWrapper({
+      todo: {
+        title: "Launch a unit test on a TodoLabel",
+        priority: "A",
+        creationDate: "2020-05-11",
+        completionDate: "2020-05-12",
+        isDone: true,
+        projects: ["dev", "vuejs", "recurring-todo"],
+        contexts: ["jest", "unit-test"],
+        dueDate: "2020-05-13",
+        isAuto: false,
+        isRecurrent: false
+      }
+    });
 
-    expect(wrapper.html()).toContain('<span class="count">0</span>');
+    expect(wrapper.html()).toContain(
+      "<p>x (A) 2020-05-12 2020-05-11 Launch a unit test on a TodoLabel +dev +vuejs +recurring-todo @jest @unit-test due:2020-05-13 auto:false recurrent:false</p>"
+    );
 
     destroyWrapper(wrapper);
   });
 
   // it's also easy to check for the existence of elements
-  it("has a button", () => {
+  /*
+	it("has a button", () => {
     const wrapper = initWrapper();
 
     expect(wrapper.contains("button")).toBe(true);
@@ -49,4 +67,5 @@ describe("Counter", () => {
 
     destroyWrapper(wrapper);
   });
+*/
 });

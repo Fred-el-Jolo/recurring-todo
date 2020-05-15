@@ -1,24 +1,35 @@
 <template>
   <div class="container">
     <h1>{{ message }}</h1>
-    <counter></counter>
-    <counter></counter>
+    <todo-label :todo="todo" />
   </div>
 </template>
 
 <script>
-import Counter from "./components/counter.js";
+import TodoLabel from './components/todo/TodoLabel.vue'
 export default {
-  name: "App",
+  name: 'App',
   components: {
-    Counter
+    TodoLabel,
   },
-  data() {
+  data () {
     return {
-      message: "Using Parcel In A Vue.js App"
-    };
-  }
-};
+      message: 'Using Parcel In A Vue.js App',
+      todo: {
+        title: 'New task',
+        priority: 'A',
+        creationDate: '2020-05-13',
+        completionDate: '',
+        isDone: false,
+        projects: ['new', 'test'],
+        contexts: ['dev', 'stub'],
+        dueDate: '2020-05-14',
+        isAuto: false,
+        isRecurrent: false,
+      },
+    }
+  },
+}
 </script>
 
 <style scoped>
