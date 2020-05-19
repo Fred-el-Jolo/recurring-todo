@@ -43,15 +43,15 @@ Recurring todolist
 
 - Components
 
-      	- TodoLabel: syntax-colored display of a todo label
-      	- UnderlyingButton: base button
-      	- DoneButton
-      	- TodoMenuButton: menu button on todo line (archive/delete/edit)
-      	- AddTodoButton
+      	v TodoLabel: syntax-colored display of a todo label
+      	x BaseButton: base button
+      	v DoneButton
+      	v TodoMenuButton: menu button on todo line (archive/delete/edit)
+      	v AddTodoButton
       	- TodoInput: input for typing todo line
       	- TodoTemplate: helper displaying todo syntax for TodoInput
       	- Tab / sub tab component
-      	- Search Button
+      	v Search Button
       	- ProjectCard: Project container
       	- TodoCard: Todo container
       	- FilterView

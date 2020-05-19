@@ -1,12 +1,19 @@
 <template>
   <div class="container">
     <h1>{{ message }}</h1>
-    <todo-label v-for="(todo, key) in todos" :todo="todo" :key="key" />
+    <div>
+      <font-awesome-icon icon="coffee"
+                         size="2x"
+      />
+    </div>
+    <todo-label v-for="(todo, key) in todos"
+                :key="key" :todo="todo"
+    />
   </div>
 </template>
 
 <script>
-import TodoLabel from './components/todo/TodoLabel.vue';
+import TodoLabel from './components/todo/TodoLabel';
 export default {
   name: 'App',
   components: {
@@ -20,7 +27,7 @@ export default {
           title: 'New task',
           priority: 'A',
           creationDate: '2020-05-13',
-          completionDate: '',
+          completionDate: null,
           isDone: false,
           projects: ['new', 'test'],
           contexts: ['dev', 'stub'],
@@ -32,8 +39,8 @@ export default {
           title: 'Another one',
           priority: 'B',
           creationDate: '2020-05-13',
-          completionDate: '',
-          isDone: false,
+          completionDate: null,
+          isDone: true,
           projects: ['new', 'test'],
           contexts: ['dev', 'stub'],
           dueDate: '2020-05-14',

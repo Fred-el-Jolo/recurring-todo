@@ -1,3 +1,3 @@
-module.exports = {
-  useTabs: false
+export default {
+  useTabs: false,
 };
