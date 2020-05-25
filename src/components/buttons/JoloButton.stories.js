@@ -9,12 +9,6 @@ Vue.component('jolo-button', JoloButton);
 export default {
   title: 'Buttons/JoloButton',
   decorators: [withKnobs],
-  parameters: {
-    backgrounds: [
-      { name: 'twitter', value: '#00aced' },
-      { name: 'facebook', value: '#3b5998' },
-    ],
-  },
 };
 
 export const arrayPropButton = () => ({

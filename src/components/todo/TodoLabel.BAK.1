@@ -1,0 +1,253 @@
+<template>
+  <p :class="[{editable: edit}, 'todo-label']"
+     :data-done="isDone"
+     :contenteditable="edit"
+     @keydown.@="onContext"
+     @keydown.space="onSpace"
+     @input="onInput"
+     @keydown.+="onProject"
+  >
+    <span v-if="isDone">{{ formatIsDone }}</span>
+    <span v-if="priority"
+          class="todo-label__priority"
+    >{{ formatPriority }}</span>
+    <span
+      v-if="completionDate"
+      class="todo-label__completion-date"
+    >{{ completionDate }}</span>
+    <span
+      v-if="creationDate"
+      class="todo-label__creation-date"
+    >{{ creationDate }}</span>
+    <span
+      v-if="title"
+      class="todo-label__title"
+    >{{ title }}</span>
+    <span
+      v-if="projects && projects.length"
+      class="todo-label__projects"
+    >{{ projects | prefixArrayValues('+') }}</span>
+    <span
+      v-if="contexts && contexts.length"
+      class="todo-label__contexts"
+    >{{ contexts | prefixArrayValues('@') }}</span>
+    <span
+      v-if="dueDate"
+      class="todo-label__extra"
+    >{{ dueDate | prefixString('due:') }}</span>
+    <span v-if="isAuto"
+          class="todo-label__extra"
+    >{{ isAuto | prefixString('auto:') }}</span>
+    <span v-if="isRecurrent"
+          class="todo-label__extra"
+    >{{ isRecurrent | prefixString('recurrent:') }}</span>
+  </p>
+</template>
+
+<script>
+const prefixRegexp = /^(?:(x)\s){0,1}(?:\(([a-zA-Z])\)\s){0,1}(?:([0-9]{4}-[0-9]{2}-[0-9]{2})\s){0,1}(?:([0-9]{4}-[0-9]{2}-[0-9]{2})\s){0,1}/i;
+
+const projectsRegexp = /\s\+([\S]+)/gi;
+const contextsRegexp = /\s@([\S]+)/gi;
+const specialRegexp = /\s([^\s:]+):([^\s:]+)/gi;
+
+export default {
+  props: {
+    todo: {
+      type: String,
+      default: 'Create a new todo',
+    },
+    edit: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  data: function () {
+    return {
+      processedValue: '',
+      title: null,
+      priority: null,
+      creationDate: null,
+      completionDate: null,
+      isDone: null,
+      projects: null,
+      contexts: null,
+      dueDate: null,
+      isAuto: null,
+      isRecurrent: null,
+    };
+  },
+  computed: {
+    formatPriority () {
+      return `(${this.priority})`;
+    },
+    formatIsDone () {
+      return this.isDone ? 'x' : '';
+    },
+    rawTodo: {
+      get: function () {
+        return 'TODO';
+      },
+      set: function (newValue) {
+        let value = newValue;
+        let matchedString = null;
+        let matchedStrings = [];
+        let projects,
+          contexts,
+          specials = null;
+
+        // Handle prefix values
+        const prefixes = prefixRegexp.exec(value);
+        if (prefixes) {
+          [matchedString, this.isDone, this.priority, this.creationDate, this.completionDate] = prefixes;
+          value = value.replace(matchedString, '');
+        }
+
+        if (value.length == 0) {
+          return;
+        }
+
+        // handle projects values
+        projects = [];
+        let currentProject = projectsRegexp.exec(value);
+        while (currentProject != null && currentProject.length == 2) {
+          matchedStrings.push(currentProject[0]);
+          projects.push(currentProject[1]);
+
+          currentProject = projectsRegexp.exec(value);
+        }
+
+        this.projects = projects;
+
+        // Remove matches from initial string
+        matchedStrings.map(current => {
+          value = value.replace(current, '');
+        });
+
+        if (value.length == 0) {
+          return;
+        }
+
+        // handle contexts values
+        matchedStrings = [];
+        contexts = [];
+        let currentContext = contextsRegexp.exec(value);
+        while (currentContext != null && currentContext.length == 2) {
+          matchedStrings.push(currentContext[0]);
+          contexts.push(currentContext[1]);
+
+          currentContext = contextsRegexp.exec(value);
+        }
+
+        this.contexts = contexts;
+
+        // Remove matches from initial string
+        matchedStrings.map(current => {
+          value = value.replace(current, '');
+        });
+
+        if (value.length == 0) {
+          return;
+        }
+
+        // handle special key:value tuples
+        matchedStrings = [];
+        specials = [];
+        let currentSpecial = specialRegexp.exec(value);
+        while (currentSpecial != null && currentSpecial.length == 3) {
+          matchedStrings.push(currentSpecial[0]);
+          specials.push({ key: currentSpecial[1], value: currentSpecial[2] });
+
+          currentSpecial = specialRegexp.exec(value);
+        }
+
+        // Remove matches from initial string
+        matchedStrings.map(current => {
+          value = value.replace(current, '');
+        });
+
+        if (value.length == 0) {
+          return;
+        }
+
+        // The remaining string should only contain the title now
+        this.title = value;
+      },
+    },
+  },
+  created: function () {
+    this.rawTodo = this.todo;
+  },
+  // Check if a value exists or use default
+  // Return undefined if the default object does not hold the requested key
+  methods: {
+    getValueOrDefault (key, defaultValue) {
+      return this.todo != null && this.todo[key] != null ? this.todo[key] : defaultValue;
+    },
+    onInput (event) {
+      console.log(event);
+      console.log(event.target.textContent);
+    },
+    onProject (event) {
+      console.log('Trying to enter new project ?');
+      console.log(event.target.textContent);
+    },
+    onContext (event) {
+      console.log('Trying to enter new context ?');
+      console.log(event.target.textContent);
+    },
+    onSpace (event) {
+      console.log('Entered space, reset key watcher state');
+      console.log(event.target.textContent);
+    },
+  },
+};
+</script>
+
+<style scoped lang="scss">
+$color-grey: #74705d;
+$color-purple: #ac80ff;
+$color-dark: rgba(0, 0, 0, 1);
+$color-yellow: #e7db74;
+$color-red: #f92470;
+$color-blue: #67d8ef;
+
+.todo-label {
+  font-size: 2em;
+  text-align: center;
+
+  &[data-done] {
+    color: $color-grey;
+  }
+
+  &:not([data-done]) {
+    & .todo-label__priority {
+      color: $color-purple;
+    }
+
+    & .todo-label__completion-date {
+      color: $color-purple;
+    }
+
+    & .todo-label__creation-date {
+      color: $color-purple;
+    }
+
+    & .todo-label__title {
+      color: $color-dark;
+    }
+
+    & .todo-label__projects {
+      color: $color-yellow;
+    }
+
+    & .todo-label__contexts {
+      color: $color-red;
+    }
+
+    & .todo-label__extra {
+      color: $color-blue;
+    }
+  }
+}
+</style>

@@ -6,9 +6,10 @@
                          size="2x"
       />
     </div>
-    <todo-label v-for="(todo, key) in todos"
+    <!--todo-label v-for="(todo, key) in todos"
                 :key="key" :todo="todo"
-    />
+    /-->
+    <todo-label :edit="true" />
   </div>
 </template>
 
@@ -23,30 +24,8 @@ export default {
     return {
       message: 'Using Parcel In A Vue.js App',
       todos: [
-        {
-          title: 'New task',
-          priority: 'A',
-          creationDate: '2020-05-13',
-          completionDate: null,
-          isDone: false,
-          projects: ['new', 'test'],
-          contexts: ['dev', 'stub'],
-          dueDate: '2020-05-14',
-          isAuto: false,
-          isRecurrent: false,
-        },
-        {
-          title: 'Another one',
-          priority: 'B',
-          creationDate: '2020-05-13',
-          completionDate: null,
-          isDone: true,
-          projects: ['new', 'test'],
-          contexts: ['dev', 'stub'],
-          dueDate: '2020-05-14',
-          isAuto: false,
-          isRecurrent: false,
-        },
+        '(A) 2020-05-13 New task +new +test @dev @stub due:2020-05-14',
+        'x (B) 2020-05-13 Another one +new +test @dev @stub due:2020-05-14',
       ],
     };
   },

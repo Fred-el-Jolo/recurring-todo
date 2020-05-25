@@ -2,8 +2,9 @@
 import { mount } from '@vue/test-utils';
 import TodoLabel from './TodoLabel.vue';
 import '../../utils/filters';
+import { lightDom } from '../../utils/test-utils';
 
-describe('TodoLabel', () => {
+describe('TodoText/TodoLabel', () => {
   const initWrapper = (propsData) => {
     return mount(TodoLabel, {
       propsData,
@@ -35,36 +36,42 @@ describe('TodoLabel', () => {
     destroyWrapper(wrapper);
   });
 
-  // it's also easy to check for the existence of elements
-  /*
-	it("has a button", () => {
-    const wrapper = initWrapper();
+  it("doesn't break with null todo object", () => {
+    const wrapper = initWrapper({
+      todo: null,
+    });
 
-    expect(wrapper.contains("button")).toBe(true);
-
-    destroyWrapper(wrapper);
-  });
-
-  it("button click should increment the count", () => {
-    const wrapper = initWrapper();
-
-    expect(wrapper.vm.count).toBe(0);
-    const button = wrapper.find("button");
-    button.trigger("click");
-    expect(wrapper.vm.count).toBe(1);
+    expect(lightDom(wrapper.html())).toEqual('<p class="todo-label"></p>');
 
     destroyWrapper(wrapper);
   });
 
-  it("button click should increment the count text", async () => {
+  it("doesn't break with undefined todo object", () => {
     const wrapper = initWrapper();
 
-    expect(wrapper.text()).toContain("0");
-    const button = wrapper.find("button");
-    await button.trigger("click");
-    expect(wrapper.text()).toContain("1");
+    expect(lightDom(wrapper.html())).toEqual('<p class="todo-label"></p>');
 
     destroyWrapper(wrapper);
   });
-*/
+
+  it("doesn't break with todo containing null properties", () => {
+    const wrapper = initWrapper({
+      todo: {
+        title: null,
+        priority: null,
+        creationDate: null,
+        completionDate: null,
+        isDone: null,
+        projects: null,
+        contexts: null,
+        dueDate: null,
+        isAuto: null,
+        isRecurrent: null,
+      },
+    });
+
+    expect(lightDom(wrapper.html())).toEqual('<p class="todo-label"></p>');
+
+    destroyWrapper(wrapper);
+  });
 });

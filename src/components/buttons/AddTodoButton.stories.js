@@ -8,12 +8,6 @@ Vue.component('add-todo-button', AddTodoButton);
 
 export default {
   title: 'Buttons/AddTodoButton',
-  parameters: {
-    backgrounds: [
-      { name: 'twitter', value: '#00aced' },
-      { name: 'facebook', value: '#3b5998' },
-    ],
-  },
 };
 
 export const standardButton = () => ({

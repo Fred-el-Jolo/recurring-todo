@@ -8,12 +8,6 @@ Vue.component('done-button', DoneButton);
 
 export default {
   title: 'Buttons/DoneButton',
-  parameters: {
-    backgrounds: [
-      { name: 'twitter', value: '#00aced' },
-      { name: 'facebook', value: '#3b5998' },
-    ],
-  },
 };
 
 export const standardButton = () => ({

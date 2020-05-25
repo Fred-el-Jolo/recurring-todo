@@ -8,12 +8,6 @@ Vue.component('search-button', SearchButton);
 
 export default {
   title: 'Buttons/SearchButton',
-  parameters: {
-    backgrounds: [
-      { name: 'twitter', value: '#00aced' },
-      { name: 'facebook', value: '#3b5998' },
-    ],
-  },
 };
 
 export const standardButton = () => ({

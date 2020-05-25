@@ -2,6 +2,10 @@
 
 Recurring todolist
 
+## Parcel issues
+
+- Need to add `posthtml` config in `package.json` [Stack overflow ref](https://stackoverflow.com/questions/56572975/vue-doesnt-render-second-component-if-the-previous-self-terminates)
+
 ## Spec
 
 - Todo.txt syntax
@@ -44,11 +48,15 @@ Recurring todolist
 - Components
 
       	v TodoLabel: syntax-colored display of a todo label
-      	x BaseButton: base button
+      	v JoloButton: base button
       	v DoneButton
       	v TodoMenuButton: menu button on todo line (archive/delete/edit)
       	v AddTodoButton
       	- TodoInput: input for typing todo line
+          - autoformat & color after space typed or when special char entered (+, @, xxx:)
+          - autoformat priority A into (A)
+          - autoformat dates like 20200521 into 2020-05-21
+          - autoformat 'today' into 2020-05-21
       	- TodoTemplate: helper displaying todo syntax for TodoInput
       	- Tab / sub tab component
       	v Search Button

@@ -8,14 +8,8 @@ import TodoLabel from './TodoLabel.vue';
 Vue.component('todo-label', TodoLabel);
 
 export default {
-  title: 'TodoLabel',
+  title: 'TodoText/TodoLabel',
   decorators: [withKnobs],
-  parameters: {
-    backgrounds: [
-      { name: 'twitter', value: '#00aced' },
-      { name: 'facebook', value: '#3b5998' },
-    ],
-  },
 };
 
 export const activeTodo = () => ({

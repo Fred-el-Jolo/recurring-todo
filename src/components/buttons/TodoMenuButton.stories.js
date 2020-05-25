@@ -8,12 +8,6 @@ Vue.component('done-button', TodoMenuButton);
 
 export default {
   title: 'Buttons/TodoMenuButton',
-  parameters: {
-    backgrounds: [
-      { name: 'twitter', value: '#00aced' },
-      { name: 'facebook', value: '#3b5998' },
-    ],
-  },
 };
 
 export const standardButton = () => ({

@@ -7,7 +7,8 @@
     "build": "parcel build src/index.html",
     "start": "parcel src/index.html",
     "dev": "parcel watch src/index.html",
-    "test": "jest",
+    "test": "jest --noStackTrace",
+    "test-silent": "jest --noStackTrace --silent",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
   },
@@ -25,6 +26,9 @@
       "^.+\\.js$": "babel-jest"
     }
   },
+  "posthtml": {
+    "recognizeSelfClosing": true
+  },
   "author": "",
   "license": "ISC",
   "devDependencies": {
@@ -38,6 +42,7 @@
     "@storybook/addon-viewport": "^5.3.18",
     "@storybook/addons": "^5.3.18",
     "@storybook/vue": "^5.3.18",
+    "@testing-library/jest-dom": "^5.8.0",
     "@vue/component-compiler-utils": "^3.1.2",
     "@vue/test-utils": "^1.0.0-beta.33",
     "babel-core": "^7.0.0-bridge.0",
