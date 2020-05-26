@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import App from './App';
-import './utils/filters';
+import './utils/vue-filters';
 // Font awesome integration
 import './utils/font-awesome';
 

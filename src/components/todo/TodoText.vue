@@ -1,62 +1,44 @@
 <template>
-  <div class="todo-label">
-    <todo-label :contenteditable="edit" class="todo-label__text"
-                :todo="todo"
-                @click="onClick"
-                @keydown="onKeyDown"
-                @keyup="onKeyUp"
-                @input="onInput"
-    />
+  <div>
+    (A) 2020-05-11 2020-05-12 Yop mate !!! +test +test2 @yop @yop2 due:2020-05-20 auto:false recurrent:false
+    <todo-label :todo="todoObject" />
+    <input v-if="edit"
+           v-model="rawValue"
+           type="text"
+           @keyup.space.enter="onChange"
+    >
   </div>
 </template>
 
 <script>
+import { Todo, parse } from '../../utils/todo';
 import TodoLabel from './TodoLabel';
 
-// https://github.com/todotxt/todo.txt
 export default {
-  components: {
-    TodoLabel,
-  },
+  components: { TodoLabel },
   props: {
+    todo: {
+      type: Object,
+      default: null,
+    },
     edit: {
       type: Boolean,
       default: false,
     },
-    todo: {
-      type: Object,
-      default: () => ({}),
-    },
   },
   data: function () {
     return {
-      rawValue: '',
-      processedValue: '',
-      todoStruct: {},
+      todoObject: this.todo || undefined,
+      rawValue: this.todo != null ? this.todo.toString() : '',
     };
   },
   methods: {
-    onClick () {
-      this.editable = this.edit ? true : false;
-    },
-    onKeyDown (event) {
-      //console.log('on key down', event);
-    },
-    onKeyUp (event) {
-      //console.log('on key up', event);
-    },
-    // https://rawgit.com/w3c/input-events/v1/index.html#interface-InputEvent-Attributes
-    onInput ({ data, inputType }) {
-      console.log(`${inputType} event, data=${data}`);
+    onChange () {
+      this.todoObject = parse(this.rawValue);
     },
   },
 };
 </script>
 
-<style scoped lang="scss">
-.todo-label {
-  .todo-label__input {
-    display: block;
-  }
-}
+<style lang="scss">
 </style>

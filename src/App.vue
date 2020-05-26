@@ -6,27 +6,68 @@
                          size="2x"
       />
     </div>
-    <!--todo-label v-for="(todo, key) in todos"
-                :key="key" :todo="todo"
-    /-->
-    <todo-label :edit="true" />
+
+    <todo-text v-for="(todo, key) in todos"
+               :key="key" :todo="todo"
+    />
   </div>
 </template>
 
 <script>
-import TodoLabel from './components/todo/TodoLabel';
+import TodoText from './components/todo/TodoText';
 export default {
   name: 'App',
   components: {
-    TodoLabel,
+    TodoText,
   },
   data () {
     return {
       message: 'Using Parcel In A Vue.js App',
       todos: [
-        '(A) 2020-05-13 New task +new +test @dev @stub due:2020-05-14',
-        'x (B) 2020-05-13 Another one +new +test @dev @stub due:2020-05-14',
+        {
+          done: true,
+          priority: 'A',
+          creationDate: new Date('2020-05-11'),
+          completionDate: new Date('2020-05-12'),
+          title: 'Yop mate !!!',
+          projects: ['test', 'test2'],
+          contexts: ['yop', 'yop2'],
+          specials: [
+            { key: 'due', value: '2020-05-20' },
+            { key: 'auto', value: 'false' },
+            { key: 'recurrent', value: 'false' },
+          ],
+        },
+        {
+          done: false,
+          priority: 'B',
+          creationDate: new Date('2020-05-11'),
+          completionDate: new Date('2020-05-12'),
+          title: 'Yop mate !!!',
+          projects: ['test', 'test2'],
+          contexts: ['yop', 'yop2'],
+          specials: [
+            { key: 'due', value: '2020-05-20' },
+            { key: 'auto', value: 'false' },
+            { key: 'recurrent', value: 'false' },
+          ],
+        },
+        null,
       ],
+      todo: {
+        done: false,
+        priority: 'A',
+        creationDate: new Date('2020-05-11'),
+        completionDate: new Date('2020-05-12'),
+        title: 'Yop mate !!!',
+        projects: ['test', 'test2'],
+        contexts: ['yop', 'yop2'],
+        specials: [
+          { key: 'due', value: '2020-05-20' },
+          { key: 'auto', value: 'false' },
+          { key: 'recurrent', value: 'false' },
+        ],
+      },
     };
   },
 };
