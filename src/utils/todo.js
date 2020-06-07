@@ -8,13 +8,10 @@ export const Todo = function (
   title,
   projects,
   contexts,
-  specials,
+  due,
+  auto,
+  recurrent,
 ) {
-
-  const due = extractDueDate(specials);
-  const auto = extractSpecialProp(specials, 'auto');
-  const recurrent = extractSpecialProp(specials, 'recurrent');
-
   const toString = function () {
     let result = `${filters.todoDone(done)} ${filters.todoPriority(
       priority,
@@ -24,7 +21,7 @@ export const Todo = function (
       projects,
       "+",
     )} ${filters.prefixArrayValues(contexts, "@")} `;
-    result += filters.todoSpecial('due', due);
+    result += filters.todoSpecial('due', filters.date(due));
     result += filters.todoSpecial('auto', auto);
     result += filters.todoSpecial('recurrent', recurrent);
     return result;
@@ -45,31 +42,37 @@ export const Todo = function (
   };
 };
 
-const prefix = /^(?:(x)\s*){0,1}(?:\(([a-zA-Z])\)\s*){0,1}(?:([0-9]{4}-[0-9]{2}-[0-9]{2})\s*){0,1}(?:([0-9]{4}-[0-9]{2}-[0-9]{2})\s*){0,1}/i;
-const projects = /\s*\+([\S]+)/g;
-const contexts = /\s*@([\S]+)/g;
-const specials = /\s*([\S:]+):([\S:]+)/g;
-const date = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
+const prefixRegexp = /^(?:(x)\s*){0,1}(?:\(([a-zA-Z])\)\s*){0,1}(?:(today[+-]?[0-9]*[dwmy]?|[0-9]{4}-?[0-9]{2}-?[0-9]{2})\s*){0,1}(?:(today[+-]?[0-9]*[dwmy]?|[0-9]{4}-?[0-9]{2}-?[0-9]{2})\s*){0,1}/i;
+const projectsRegexp = /\s+\+([\S]+)/g;
+const contextsRegexp = /\s+@([\S]+)/g;
+const specialsRegexp = /\s+([\S:]+):([\S:]+)/g;
+const dateRegexp = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
+const date2Regexp = /^[0-9]{4}[0-9]{2}[0-9]{2}$/;
+const todayRegexp = /^today([+-]?)([0-9]*)([dwmy]?)$/;
 
 export const parse = (rawValue) => {
   const prefixesData = processPrefixes(rawValue);
   rawValue = prefixesData.rawValue;
   const done = prefixesData.done;
   const priority = prefixesData.priority;
-  const creationDate = prefixesData.creationDate != null ? new Date(prefixesData.creationDate) : null;
-  const completionDate = prefixesData.completionDate != null ? new Date(prefixesData.completionDate) : null;
+  const creationDate = prefixesData.creationDate;
+  const completionDate = prefixesData.completionDate;
 
-  const projectsData = processTokens(rawValue, projects);
+  const projectsData = processTokens(rawValue, projectsRegexp);
   rawValue = projectsData.rawValue;
   const projectsArray = projectsData.results;
 
-  const contextsData = processTokens(rawValue, contexts);
+  const contextsData = processTokens(rawValue, contextsRegexp);
   rawValue = contextsData.rawValue;
   const contextsArray = contextsData.results;
 
-  const specialsData = processSpecials(rawValue, specials);
+  const specialsData = processSpecials(rawValue, specialsRegexp);
   rawValue = specialsData.rawValue;
   const specialsArray = specialsData.results;
+
+  const due = extractDueDate(specialsArray);
+  const auto = extractSpecialProp(specialsArray, 'auto');
+  const recurrent = extractSpecialProp(specialsArray, 'recurrent');
 
   const title = rawValue.trim();
 
@@ -81,14 +84,16 @@ export const parse = (rawValue) => {
     title,
     projectsArray,
     contextsArray,
-    specialsArray,
+    due,
+    auto,
+    recurrent,
   );
 };
 
 const processPrefixes = (rawValue) => {
-  let matchedString, done, priority, creationDate, completionDate;
+  let matchedString, done, priority, creationDate, completionDate, recomputedCreationDate, recomputedCompletionDate;
 
-  const prefixes = prefix.exec(rawValue);
+  const prefixes = prefixRegexp.exec(rawValue);
   if (prefixes) {
     matchedString = prefixes[0];
     done = prefixes[1];
@@ -96,8 +101,11 @@ const processPrefixes = (rawValue) => {
     creationDate = prefixes[3];
     completionDate = prefixes[4];
     rawValue = rawValue.replace(matchedString, "");
+
+    recomputedCreationDate = processDate(creationDate);
+    recomputedCompletionDate = processDate(completionDate);
   }
-  return { rawValue, done, priority, creationDate, completionDate };
+  return { rawValue, done, priority, creationDate: recomputedCreationDate, completionDate: recomputedCompletionDate };
 };
 
 const processTokens = (rawValue, regexp) => {
@@ -128,8 +136,8 @@ const processSpecials = (rawValue, regexp) => {
 const extractDueDate = (specials) => {
   if (specials != null && specials.length) {
     const due = specials.find(item => item.key === 'due');
-    if (due != null && date.test(due.value)) {
-      return due.value;
+    if (due != null) {
+      return processDate(due.value);
     }
   }
   return null;
@@ -141,6 +149,50 @@ const extractSpecialProp = (specials, key) => {
     if (due != null) {
       return due.value;
     }
+  }
+  return null;
+};
+
+const computeRelativeDate = (inputString) => {
+  const computedDate = new Date();
+
+  const todayModifiers = todayRegexp.exec(inputString);
+  if (todayModifiers) {
+    const operationToken = todayModifiers[1];
+    const amountToken = +todayModifiers[2];
+    const typeToken = todayModifiers[3];
+
+    if (!isNaN(amountToken)) {
+      const operation = operationToken === '+' ? (a, b) => a + b : (a, b) => a - b;
+
+      if (typeToken === null || typeToken === 'd' || typeToken === '') {
+        computedDate.setDate(operation(computedDate.getDate(), amountToken));
+      }
+      else if (typeToken === 'w') {
+        computedDate.setDate(operation(computedDate.getDate(), amountToken * 7));
+      }
+      else if (typeToken === 'm') {
+        computedDate.setMonth(operation(computedDate.getMonth(), amountToken));
+      }
+      else if (typeToken === 'y') {
+        computedDate.setFullYear(operation(computedDate.getFullYear(), amountToken));
+      }
+    }
+  }
+  return computedDate;
+};
+
+const processDate = (inputString) => {
+  if (inputString != null) {
+    if (inputString.startsWith('today')) {
+      return computeRelativeDate(inputString);
+    }
+    else if (date2Regexp.test(inputString)) {
+      return new Date(`${inputString.slice(0, 4)}-${inputString.slice(4, 6)}-${inputString.slice(6)}`);
+    }
+  }
+  else if (dateRegexp.test(inputString)) {
+    return new Date(inputString);
   }
   return null;
 };

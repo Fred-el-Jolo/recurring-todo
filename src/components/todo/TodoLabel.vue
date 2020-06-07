@@ -18,7 +18,7 @@
       todo.contexts | prefixArrayValues("@")
     }}</span>
     <span class="todo-label__specials">{{
-      todo.due | todoSpecial("due")
+      todo.due | date | todoSpecial("due") 
     }}</span>
     <span class="todo-label__specials">{{
       todo.auto | todoSpecial("auto")

@@ -34,11 +34,9 @@ export default {
           'Yop mate !!!',
           ['test', 'test2'],
           ['yop', 'yop2'],
-          [
-            { key: 'due', value: '2020-05-20' },
-            { key: 'auto', value: 'false' },
-            { key: 'recurrent', value: 'false' },
-          ],
+          new Date('2020-05-20'),
+            false,
+            false,
         ),
       ],
     };
