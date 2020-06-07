@@ -52,9 +52,9 @@ Recurring todolist
       	v DoneButton
       	v TodoMenuButton: menu button on todo line (archive/delete/edit)
       	v AddTodoButton
-      	- TodoInput: input for typing todo line
-          - autoformat & color after space typed or when special char entered (+, @, xxx:)
-          - autoformat priority A into (A)
+      	v TodoInput: input for typing todo line
+          x autoformat & color after space typed or when special char entered (+, @, xxx:)
+          v autoformat priority A into (A)
           - autoformat dates like 20200521 into 2020-05-21
           - autoformat 'today' into 2020-05-21
       	- TodoTemplate: helper displaying todo syntax for TodoInput

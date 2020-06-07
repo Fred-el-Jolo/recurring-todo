@@ -1,9 +1,24 @@
 {
-  "extends": ["eslint:recommended", "plugin:vue/recommended"],
+  "root": true,
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/recommended"
+  ],
   "rules": {
+    "object-curly-spacing": [
+      "error",
+      "always"
+    ],
     "import/no-unresolved": 0,
     "import/no-unassigned-import": 0,
-    "semi": ["error", "always"],
+    "semi": [
+      "error",
+      "always"
+    ],
     "no-console": "off",
     "space-before-function-paren": [
       "error",
@@ -13,7 +28,10 @@
         "asyncArrow": "always"
       }
     ],
-    "comma-dangle": ["error", "always-multiline"],
+    "comma-dangle": [
+      "error",
+      "always-multiline"
+    ],
     "vue/max-attributes-per-line": [
       "error",
       {
@@ -23,11 +41,24 @@
           "allowFirstLine": true
         }
       }
+    ],
+    "vue/html-indent": [
+      "error",
+      2,
+      {
+        "attribute": 1,
+        "baseIndent": 1,
+        "closeBracket": 0,
+        "alignAttributesVertically": true,
+        "ignores": []
+      }
     ]
   },
   "overrides": [
     {
-      "files": ["*.spec.js"],
+      "files": [
+        "*.spec.js"
+      ],
       "env": {
         "jest": true
       }

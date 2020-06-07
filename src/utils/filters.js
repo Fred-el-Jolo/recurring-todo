@@ -9,15 +9,11 @@ export function prefixArrayValues (array, prefix) {
     .trim();
 }
 
-export function todoSpecial (array) {
-  if (array == null) {
+export function todoSpecial (value, key) {
+  if (key == null || value == null) {
     return '';
   }
-  return array
-  .reduce((acc, cur) => {
-    return (cur != null) ? acc += ` ${cur.key}:${cur.value}` : acc;
-  }, '')
-  .trim();
+  return `${key}:${value}`.trim();
 }
 
 export function date (value) {
@@ -27,7 +23,7 @@ export function date (value) {
   return '';
 }
 
-export function defaultvalue (value, defaultValue) {
+export function defaultValue (value, defaultValue) {
   return value != null ? value : defaultValue;
 }
 

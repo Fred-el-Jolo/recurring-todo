@@ -7,7 +7,7 @@ Vue.filter('todoSpecial', filters.todoSpecial);
 
 Vue.filter('date', filters.date);
 
-Vue.filter('default', filters.defaultvalue);
+Vue.filter('default', filters.defaultValue);
 
 Vue.filter('todoDone', filters.todoDone);
 

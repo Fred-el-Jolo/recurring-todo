@@ -1,16 +1,31 @@
 <template>
   <p ref="inputNode"
-     class="todo-label"
-     :data-done="!!todo.done"
+     class="todo-label" :data-done="!!todo.done"
   >
     <span class="todo-label__done">{{ todo.done | todoDone }}</span>
     <span class="todo-label__priority">{{ todo.priority | todoPriority }}</span>
-    <span class="todo-label__creation-date">{{ todo.creationDate | date }}</span>
-    <span class="todo-label__completion-date">{{ todo.completionDate | date }}</span>
+    <span class="todo-label__creation-date">{{
+      todo.creationDate | date
+    }}</span>
+    <span class="todo-label__completion-date">{{
+      todo.completionDate | date
+    }}</span>
     <span class="todo-label__title">{{ todo.title | default('') }}</span>
-    <span class="todo-label__projects">{{ todo.projects | prefixArrayValues('+') }}</span>
-    <span class="todo-label__contexts">{{ todo.contexts | prefixArrayValues('@') }}</span>
-    <span class="todo-label__specials">{{ todo.specials | todoSpecial }}</span>
+    <span class="todo-label__projects">{{
+      todo.projects | prefixArrayValues("+")
+    }}</span>
+    <span class="todo-label__contexts">{{
+      todo.contexts | prefixArrayValues("@")
+    }}</span>
+    <span class="todo-label__specials">{{
+      todo.due | todoSpecial("due")
+    }}</span>
+    <span class="todo-label__specials">{{
+      todo.auto | todoSpecial("auto")
+    }}</span>
+    <span class="todo-label__specials">{{
+      todo.recurrent | todoSpecial("recurrent")
+    }}</span>
   </p>
 </template>
 
@@ -28,17 +43,19 @@ export default {
           title: null,
           projects: [],
           contexts: [],
-          specials: [],
+          due: null,
+          auto: null,
+          recurrent: null,
         };
       },
     },
   },
   computed: {
-    formatDone () {
-      return this.todo.done ? 'x' : '';
+    formatDone (){
+      return this.todo.done ? "x" : "";
     },
     formatPriority () {
-      return this.todo.priority ? `(${this.todo.priority})` : '';
+      return this.todo.priority ? `(${this.todo.priority})` : "";
     },
   },
 };

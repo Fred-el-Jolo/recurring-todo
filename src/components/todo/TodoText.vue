@@ -1,18 +1,21 @@
 <template>
   <div>
-    (A) 2020-05-11 2020-05-12 Yop mate !!! +test +test2 @yop @yop2 due:2020-05-20 auto:false recurrent:false
     <todo-label :todo="todoObject" />
     <input v-if="edit"
-           v-model="rawValue"
-           type="text"
-           @keyup.space.enter="onChange"
+           v-model="rawValue" type="text"
+           @keyup.space.enter="flushChanges" @input="onChange"
     >
   </div>
 </template>
 
 <script>
-import { Todo, parse } from '../../utils/todo';
+import debounce from 'lodash-es/debounce';
+import { parse } from '../../utils/todo';
 import TodoLabel from './TodoLabel';
+
+const debouncedParse = debounce(function () {
+  this.todoObject = parse(this.rawValue);
+}, 300);
 
 export default {
   components: { TodoLabel },
@@ -33,12 +36,12 @@ export default {
     };
   },
   methods: {
-    onChange () {
-      this.todoObject = parse(this.rawValue);
+    onChange: debouncedParse,
+    flushChanges () {
+      debouncedParse.flush();
     },
   },
 };
 </script>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

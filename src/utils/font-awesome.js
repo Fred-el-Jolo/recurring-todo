@@ -1,17 +1,16 @@
 import Vue from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import {
-  faCoffee,
-  faChild,
-  faCircle,
-  faArchive,
-  faCheckCircle,
-  faEllipsisV,
-  faSearch,
-  faPlusCircle,
-} from '@fortawesome/free-solid-svg-icons';
-import { faComment } from '@fortawesome/free-regular-svg-icons';
-import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons';
+import { faCoffee } from '@fortawesome/free-solid-svg-icons/faCoffee';
+import { faChild } from '@fortawesome/free-solid-svg-icons/faChild';
+import { faCircle } from '@fortawesome/free-solid-svg-icons/faCircle';
+import { faArchive } from '@fortawesome/free-solid-svg-icons/faArchive';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons/faCheckCircle';
+import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
+import { faSearch } from '@fortawesome/free-solid-svg-icons/faSearch';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons/faPlusCircle';
+import { faComment } from '@fortawesome/free-regular-svg-icons/faComment';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons/faTwitter';
+import { faFontAwesome } from '@fortawesome/free-brands-svg-icons/faFontAwesome';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 library.add(
